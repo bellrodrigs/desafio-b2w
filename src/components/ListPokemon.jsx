@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
+import styled from 'styled-components'
 
 import './ListPokemon.css';
 function ListPokemon() {
+
+ 
+
   //states
   const [pokemon, setPokemon] = useState([]);
   const [type, setType] = useState('fire')
-  const [total, setTotal] = useState([10]);
 
   const urlDefault = `https://pokeapi.co/api/v2/type/${type}`;
   const imageNotFound = 'https://betadesign.com.br/site/wp-content/themes/bds/images/no-image-found-360x250.png'
@@ -30,7 +33,7 @@ function ListPokemon() {
           setPokemon((pokemon) => [
             ...pokemon,
             {
-              id: index[6],
+              index: index[6],
               img: data.sprites.front_default,
               data,
               price: 10
@@ -42,29 +45,38 @@ function ListPokemon() {
  };
 
  const addPokemon =  (data) => {
-  setTotal((total) => [...total, data.price])
-  const totalPrice = total.reduce((a, b) => a + b, 0)
-  addTotal(totalPrice)
   dispatch({type:'ADD_POKEMON', data: data})
- }
-
- const addTotal = (price) => {
-   dispatch({type:'ADD_TOTAL', total:price })
  }
 
 
   return (
-    <div className="List">
+    <List>
        {pokemon.map(x => 
-       <div style={{width:'20%', border: '#c3c3c3 1px solid', margin: '20px', padding:'10px 10px 40px 10px'}} className="pokemonList" key={x.id}>
+       <CardPokemon style={{width:'20%', border: '#c3c3c3 1px solid', margin: '20px', padding:'10px 10px 40px 10px'}} className="pokemonList" key={x.index}>
           <p>{x.data.name.toUpperCase()}</p>
           {x.img ? <img src={ x.img} /> : <img style={{ width:'50%'}} src={imageNotFound} />}
           <p>R${x.price}</p>
-          <button onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: x.id})}>add</button>
-       </div>
+          <button onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})}>add</button>
+       </CardPokemon>
        )}
-    </div>
+    </List>
   );
 }
 
 export default ListPokemon;
+
+const List = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const CardPokemon = styled.div`
+  width:15%;
+  border: #c3c3c3 1px solid;
+  margin: 20px; 
+  padding: 10px 10px 40px 10px
+`;
+
+const ButtonAdd = styled.button`
+
+`;
