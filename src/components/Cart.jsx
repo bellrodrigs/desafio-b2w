@@ -18,11 +18,16 @@ function Cart() {
     let total = pokemon.map(x => x.price)
     return totalPrice = total.reduce((a,b) => a + b, 0)
   }
-
   
   const removePokemon = (id) => {
     dispatch({type: 'REMOVE_POKEMON', id: id})
   }
+
+  const finishPurchase = () =>{
+    alert('Sua compra foi finalizada com sucesso!')
+    dispatch({type: 'CLEAN_CART_POKEMON'})
+  }
+
   return (
     <div style={{height:'40%'}}>
       <p>Itens no carrinho: {length}</p>
@@ -35,6 +40,7 @@ function Cart() {
       </div>
       )}
       <h2>Total: {calcTotal()}</h2>
+      {length >=1 ? <button onClick={() => finishPurchase()}>Finalizar compra</button> : null}
       </div>
   );
 }
