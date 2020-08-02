@@ -7,9 +7,9 @@ import {FirstLetterUpperCase} from '../helpers'
 
 
 function Cart() {
-  const pokemon = useSelector(state => state.pokemons)
+  const pokemon = useSelector(state => state.pokemons.pokemons)
   const typeName = useSelector(state => state.type)
-  let length = useSelector(state => state.pokemons.length)
+  let length = useSelector(state => state.pokemons.pokemons.length)
   const dispatch = useDispatch()
   let totalPrice = 0
 
