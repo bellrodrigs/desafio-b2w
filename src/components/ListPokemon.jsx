@@ -1,29 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux'
-import styled from 'styled-components'
+import {useDispatch} from 'react-redux'
 import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import {FirstLetterUpperCase} from '../helpers'
 
 
-import './ListPokemon.css';
-function ListPokemon(props) {
-
+function ListPokemon() {
 
   //states
   const [pokemon, setPokemon] = useState([]);
-  const pookemonLength = useSelector(state => state.pokemons.length)
+  const [type, setType] = useState({name:'fire'})
 
-  const [type, setType] = useState('fire')
-  const [color, setColor] = useState([])
-
-  const urlDefault = `https://pokeapi.co/api/v2/type/${type}`;
+  const urlDefault = `https://pokeapi.co/api/v2/type/${type.name}`;
   const imageNotFound = 'https://betadesign.com.br/site/wp-content/themes/bds/images/no-image-found-360x250.png'
 
   const dispatch = useDispatch()
 
-const tipos = [{t: 'fire', color: "warning"},{t: 'water', color:'info'}]
+const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', type: 'water', color:'info'}]
 
   useEffect(() => {
     loadPokemons(urlDefault);
@@ -59,8 +51,8 @@ const tipos = [{t: 'fire', color: "warning"},{t: 'water', color:'info'}]
  const getType = async (typeName) => {
   setPokemon([])
   await setType(typeName)
-  loadPokemons(`https://pokeapi.co/api/v2/type/${typeName}`)
-  dispatch({type: 'ADD_TYPE_POKEMON', typePokemon: typeName})
+  loadPokemons(`https://pokeapi.co/api/v2/type/${typeName.type}`)
+  dispatch({type: 'ADD_TYPE_POKEMON', typePokemon: typeName.type})
  }
 
  const findPokemon = (ev) => {
@@ -70,7 +62,7 @@ const tipos = [{t: 'fire', color: "warning"},{t: 'water', color:'info'}]
     }else if (ev.target.value == '') {
       if(pokemon.length <= 1){
         setPokemon([])
-        loadPokemons(`https://pokeapi.co/api/v2/type/${type}`)
+        loadPokemons(`https://pokeapi.co/api/v2/type/${type.name}`)
       }
     }
  }
@@ -81,19 +73,18 @@ const tipos = [{t: 'fire', color: "warning"},{t: 'water', color:'info'}]
          <Col sm={10}>
           <InputGroup  className="mb-3">
             <FormControl
-              placeholder="Search"
-              aria-label="Search"
+              placeholder="Buscar"
+              aria-label="Buscar"
               aria-describedby="basic-addon1"
               onChange={findPokemon}
             />
           </InputGroup>
          </Col>
          <Col sm={2}>
-          {tipos.map(tipo => <Button style={{marginRight: '8px'}} variant={tipo.color} onClick={() => getType(tipo.t)}>{FirstLetterUpperCase(tipo.t)}</Button>)}
-          <FontAwesomeIcon icon={faShoppingCart} />{pookemonLength}
+          {tipos.map(tipo => <Button style={{marginRight: '8px'}} variant={tipo.color} onClick={() => getType({name: 'tipo.name', type:tipo.type})}>{FirstLetterUpperCase(tipo.name)}</Button>)}
          </Col>
       </Row>
-      <h4>Pokemon Type: {FirstLetterUpperCase(type)}</h4>
+      <h5>Pokemon do Tipo: {type.name == 'fire' ? FirstLetterUpperCase('fogo') : FirstLetterUpperCase('água') }</h5>
       <Row>
        {pokemon.map(x => 
         <Card style={{ width: '12rem', margin: '10px 0px 20px 10px', textAlign:'center' }}>
@@ -103,7 +94,7 @@ const tipos = [{t: 'fire', color: "warning"},{t: 'water', color:'info'}]
           <Card.Text>
             R$ {x.price},00
           </Card.Text>
-         { type == 'fire' ? <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="warning">Add to Cart</Button> : <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="info">Add to Cart</Button>}
+         { type.name == 'fire' ? <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="warning">Adicionar</Button> : <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="info">Adicionar</Button>}
         </Card.Body>
       </Card>
        )}
@@ -114,18 +105,3 @@ const tipos = [{t: 'fire', color: "warning"},{t: 'water', color:'info'}]
 
 export default ListPokemon;
 
-const List = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const CardPokemon = styled.div`
-  width:15%;
-  border: #c3c3c3 1px solid;
-  margin: 20px; 
-  padding: 10px 10px 40px 10px
-`;
-
-const ButtonAdd = styled.button`
-
-`;
