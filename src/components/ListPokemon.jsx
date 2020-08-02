@@ -8,7 +8,6 @@ function ListPokemon(props) {
 
   //states
   const [pokemon, setPokemon] = useState([]);
-  const [pokemonSearch, setPokemonSearch] = useState([]);
 
   const [type, setType] = useState('fire')
 
@@ -18,7 +17,6 @@ function ListPokemon(props) {
   const dispatch = useDispatch()
 
 const tipos = ['fire', 'water']
- const handleSearch = false
   useEffect(() => {
     loadPokemons(urlDefault);
   }, []);
