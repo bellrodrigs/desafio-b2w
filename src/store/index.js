@@ -7,9 +7,7 @@ const INITIAL_STATE = {
 
    
 function pokemons(state = INITIAL_STATE, action){
- 
-  console.log(state.pokemons)
-  switch(action.type){
+   switch(action.type){
     case 'ADD_POKEMON':
       return { ...state, pokemons:[ ...state.pokemons, action.data]}
     case 'REMOVE_POKEMON':

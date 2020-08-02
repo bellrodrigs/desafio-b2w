@@ -6,12 +6,18 @@ function Cart() {
   const pokemon = useSelector(state => state.pokemons)
   let length = useSelector(state => state.pokemons.length)
   const dispatch = useDispatch()
+  // const [totalPrice, setTotalPrice] = useState()
+  let totalPrice = 0
 
   useEffect(() => {
     //first get
-    
- 
+
   }, []);
+  
+  const calcTotal = () => {
+    let total = pokemon.map(x => x.price)
+    return totalPrice = total.reduce((a,b) => a + b, 0)
+  }
 
   
   const removePokemon = (id) => {
@@ -28,7 +34,7 @@ function Cart() {
          <button onClick={() => removePokemon(x.id)}>Remove</button>
       </div>
       )}
-      <h2>Total: {length * 10}</h2>
+      <h2>Total: {calcTotal()}</h2>
       </div>
   );
 }
