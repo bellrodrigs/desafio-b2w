@@ -1,33 +1,24 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Provider } from 'react-redux';
-import store from './store'
 import ListPokemon from  './components/ListPokemon'
 import Cart from  './components/Cart'
- 
-const types = ['fire', 'water']
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col } from 'react-bootstrap';
+import {useSelector} from 'react-redux'
+
 
 function App() {
-  const [type, setType] = useState('fire')
-
+  const pokemon = useSelector(state => state.pokemons)
 
   return (
-    <Provider store={store}>
-     
-    <div>
-      <div>
-        <h1>header</h1>
-      </div>
-    <div className="App">
-      <div className='teste' style={{width:'70%'}}>
-        <ListPokemon />
-      </div>
-      <div style={{width:'30%', borderLeft: '1px solid black'}}>
-        <Cart  />
-      </div>
-    </div>
-    </div>
-    </Provider>
+    <Container fluid style={{backgroundColor:'#ededed'}}>
+      <Row>
+       {/* {pokemon.length > 0 ? <Col xs={6} sm={9}><ListPokemon /></Col> : <Col xs={12} sm={12}><ListPokemon /></Col>}
+       {pokemon.length > 0 ? <Col xs={6} sm={3} style={{borderLeft: '1px #c3c3c3 solid'}}><Cart  /></Col> : null} */}
+       <Col xs={6} sm={9}><ListPokemon /></Col>
+       <Col xs={6} sm={3} style={{borderLeft: '1px #c3c3c3 solid'}}><Cart /></Col>
+      </Row>
+    </Container>
   );
 }
 
