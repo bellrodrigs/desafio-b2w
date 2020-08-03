@@ -3,7 +3,7 @@ import {defineState} from 'redux-localstore'
 const defaultState = {
     pokemons:[],
     pokemonCart:[],
-    type:''
+    typePokemon:''
     };
 
     const INITIAL_STATE = defineState(defaultState)('pokemons')

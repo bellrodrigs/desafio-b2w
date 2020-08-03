@@ -7,11 +7,11 @@ import {FirstLetterUpperCase} from '../helpers'
 function ListPokemon() {
 
   //states
-  const [pokemon, setPokemon] = useState([]);
-  const [type, setType] = useState({name:'fire'})
   const typeRedux = useSelector(state => state.pokemons.typePokemon)
+  const [pokemon, setPokemon] = useState([]);
+  const [type, setType] = useState(typeRedux !== '' ? typeRedux : {name:'fire'})
 
-  const urlDefault = `https://pokeapi.co/api/v2/type/${type.name}`;
+  const urlDefault = `https://pokeapi.co/api/v2/type/${typeRedux !== '' ? typeRedux : type.name}`;
   const imageNotFound = 'https://betadesign.com.br/site/wp-content/themes/bds/images/no-image-found-360x250.png'
 
   const dispatch = useDispatch()
@@ -51,6 +51,7 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
  }
 
  const getType = async (typeName) => {
+   console.log(JSON.parse(localStorage.getItem('reduxStore')))
  await setPokemon([])
   setType(typeName.name)
   loadPokemons(`https://pokeapi.co/api/v2/type/${typeName.type}`)
@@ -68,8 +69,7 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
       setPokemon(newList)
     } else if (ev.target.value === '') {
         setPokemon([])
-        loadPokemons(`https://pokeapi.co/api/v2/type/${type.name}`)
-      
+        loadPokemons(`https://pokeapi.co/api/v2/type/${typeRedux}`)
     }
  }
 
@@ -103,7 +103,7 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
           <Card.Text>
             R$ {x.price},00
           </Card.Text>
-         { typeRedux === "fire" ? <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="warning">Adicionar</Button> : <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="info">Adicionar</Button>}
+         { (typeRedux === "fire") || (type.name === "fire") ? <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="warning">Adicionar</Button> : <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="info">Adicionar</Button>}
         </Card.Body>
       </Card>
        )}
