@@ -1,7 +1,7 @@
 import {createStore, combineReducers} from 'redux'
 import storeSynchronize from 'redux-localstore'
 
-import pokemons from './action'
+import pokemons from './reducer'
 
 const combineReducer = combineReducers({
   pokemons
