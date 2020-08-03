@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux'
+import {useDispatch } from 'react-redux'
 import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap'
 import {FirstLetterUpperCase} from '../helpers'
 
@@ -40,12 +40,12 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
             },
           ]);
         });
-       })
-     });
- };
-
- const addPokemon =  (data) => {
-  dispatch({type:'ADD_POKEMON', data: data})
+      })
+    });
+  };
+  
+  const addPokemon =  (data) => {
+  dispatch({type:'ADD_POKEMON_CART', data: data})
  }
 
  const getType = async (typeName) => {
@@ -56,14 +56,18 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
  }
 
  const findPokemon = (ev) => {
-  let poke = pokemon.filter(item => item.data.name === ev.target.value.toLowerCase())
-  if(poke.length >= 1){
-      setPokemon(poke)
-    }else if (ev.target.value == '') {
-      if(pokemon.length <= 1){
+
+  let poke = pokemon.map(x => {
+    return { index: x.index, img: x.img, data: x.data , price: x.price}
+  })
+  if(ev.target.value !== ''){
+      let newList = [];
+      newList = poke.filter(p => p.data.name.includes(ev.target.value.toLowerCase()))
+      setPokemon(newList)
+    } else if (ev.target.value === '') {
         setPokemon([])
         loadPokemons(`https://pokeapi.co/api/v2/type/${type.name}`)
-      }
+      
     }
  }
 
@@ -87,7 +91,7 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
       <h5>Pokemon do Tipo: {type.name == 'fire' ? FirstLetterUpperCase('fogo') : FirstLetterUpperCase('água') }</h5>
       <Row>
        {pokemon.map(x => 
-        <Card style={{ width: '12rem', margin: '10px 0px 20px 10px', textAlign:'center' }}>
+        <Card style={{ width: '13rem', margin: '10px 0px 20px 25px', textAlign:'center', boxShadow: '0px 0px 10px -5px rgba(0,0,0,0.75)' }}>
         <Card.Body>
           <Card.Title>{FirstLetterUpperCase(x.data.name)}</Card.Title>
           {x.img ? <Card.Img style={{ width: '8rem'}} variant="top" src={x.img} /> : <Card.Img style={{ width: '8rem'}} variant="top" src={imageNotFound} />}

@@ -8,9 +8,9 @@ import Ash from '../assets/images/ash.png'
 
 
 function Cart() {
-  const pokemon = useSelector(state => state.pokemons.pokemons)
-  let length = useSelector(state => state.pokemons.pokemons.length)
   const dispatch = useDispatch()
+  const pokemon = useSelector(state => state.pokemons.pokemonCart)
+  let length = pokemon.length
   let totalPrice = 0
   const [show, setShow] = useState(false);
 
@@ -22,7 +22,7 @@ function Cart() {
   }
   
   const removePokemon = (id) => {
-    dispatch({type: 'REMOVE_POKEMON', id: id})
+    dispatch({type: 'REMOVE_POKEMON_CART', id: id})
   }
 
   const finishPurchase = () =>{
