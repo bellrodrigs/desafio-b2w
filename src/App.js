@@ -7,7 +7,7 @@ import {useSelector} from 'react-redux'
 
 
 function App() {
-  const pokemon = useSelector(state => state.pokemons.pokemons)
+  const pokemon = useSelector(state => state.pokemons?.pokemons)
   const [mobile, setMobile] = useState(false)
   useEffect(() => {
     detectMob()
@@ -36,13 +36,13 @@ function App() {
     <Container fluid style={{backgroundColor:'#ededed'}}>
       { mobile === true ?
       <Row>
-        {pokemon.length > 0 ? <Col xs={12} sm={3} style={{borderBottom: '1px #c3c3c3 solid'}}><Cart  /></Col> : null}
-        {pokemon.length > 0 ? <Col xs={12} sm={9}><ListPokemon /></Col> : <Col xs={12} sm={12}><ListPokemon /></Col>}
+        {pokemon?.length > 0 ? <Col xs={12} sm={3} style={{borderBottom: '1px #c3c3c3 solid'}}><Cart  /></Col> : null}
+        {pokemon?.length > 0 ? <Col xs={12} sm={9}><ListPokemon /></Col> : <Col xs={12} sm={12}><ListPokemon /></Col>}
       </Row>
       :
       <Row>
-        {pokemon.length > 0 ? <Col xs={12} sm={9}><ListPokemon /></Col> : <Col xs={12} sm={12}><ListPokemon /></Col>}
-        {pokemon.length > 0 ? <Col xs={12} sm={3} style={{borderLeft: '1px #c3c3c3 solid'}}><Cart  /></Col> : null}
+        {pokemon?.length > 0 ? <Col xs={12} sm={9}><ListPokemon /></Col> : <Col xs={12} sm={12}><ListPokemon /></Col>}
+        {pokemon?.length > 0 ? <Col xs={12} sm={3} style={{borderLeft: '1px #c3c3c3 solid'}}><Cart  /></Col> : null}
       </Row>
     }
     </Container>

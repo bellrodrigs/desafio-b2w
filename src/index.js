@@ -9,9 +9,9 @@ import store from './store'
 
 
 ReactDOM.render(
-  <React.StrictMode style={{height:'100px'}}>
-    <Provider store={store} style={{height:'100px'}}>
-      <App style={{height:'100px'}} />
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
