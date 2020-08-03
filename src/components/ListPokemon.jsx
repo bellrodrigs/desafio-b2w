@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch } from 'react-redux'
+import {useDispatch, useSelector } from 'react-redux'
 import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap'
 import {FirstLetterUpperCase} from '../helpers'
 
@@ -9,6 +9,7 @@ function ListPokemon() {
   //states
   const [pokemon, setPokemon] = useState([]);
   const [type, setType] = useState({name:'fire'})
+  const typeRedux = useSelector(state => state.pokemons.typePokemon)
 
   const urlDefault = `https://pokeapi.co/api/v2/type/${type.name}`;
   const imageNotFound = 'https://betadesign.com.br/site/wp-content/themes/bds/images/no-image-found-360x250.png'
@@ -44,13 +45,14 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
     });
   };
   
+
   const addPokemon =  (data) => {
   dispatch({type:'ADD_POKEMON_CART', data: data})
  }
 
  const getType = async (typeName) => {
-  setPokemon([])
-  await setType(typeName)
+ await setPokemon([])
+  setType(typeName.name)
   loadPokemons(`https://pokeapi.co/api/v2/type/${typeName.type}`)
   dispatch({type: 'ADD_TYPE_POKEMON', typePokemon: typeName.type})
  }
@@ -71,6 +73,9 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
     }
  }
 
+ const fireLength = typeRedux == 'fire' || type.name =='fire' ? pokemon.length : 0
+ const waterLength = typeRedux == 'water' ? pokemon.length : 0
+
   return (
     <Container fluid>
        <Row style={{marginTop:'20px'}}>
@@ -85,10 +90,10 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
           </InputGroup>
          </Col>
          <Col sm={2}>
-          {tipos.map(tipo => <Button style={{marginRight: '8px'}} variant={tipo.color} onClick={() => getType({name: 'tipo.name', type:tipo.type})}>{FirstLetterUpperCase(tipo.name)}</Button>)}
+          {tipos.map(tipo => <Button disabled={(fireLength < 75 && waterLength == 0) || (waterLength < 137 && fireLength == 0) } style={{marginRight: '8px'}} variant={tipo.color} onClick={() => getType({name: tipo.name, type:tipo.type})}>{FirstLetterUpperCase(tipo.name)}</Button>)}
          </Col>
       </Row>
-      <h5>Pokemon do Tipo: {type.name == 'fire' ? FirstLetterUpperCase('fogo') : FirstLetterUpperCase('água') }</h5>
+      <h5>Pokemon do Tipo: {typeRedux == 'fire' ? FirstLetterUpperCase('fogo') : FirstLetterUpperCase('água') }</h5>
       <Row>
        {pokemon.map(x => 
         <Card style={{ width: '13rem', margin: '10px 0px 20px 25px', textAlign:'center', boxShadow: '0px 0px 10px -5px rgba(0,0,0,0.75)' }}>
@@ -98,7 +103,7 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
           <Card.Text>
             R$ {x.price},00
           </Card.Text>
-         { type.name == 'fire' ? <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="warning">Adicionar</Button> : <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="info">Adicionar</Button>}
+         { typeRedux === "fire" ? <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="warning">Adicionar</Button> : <Button block onClick={() => addPokemon({name:x.data.name, img: x.img ? x.img : imageNotFound, price: x.price, id: Date.now()})} variant="info">Adicionar</Button>}
         </Card.Body>
       </Card>
        )}
