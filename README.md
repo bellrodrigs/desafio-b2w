@@ -2,7 +2,7 @@
 
 This project is based on the challenge of the B2W company, whose purpose was to create a pokemon store, with ReactJs.
 
-The project will be temporarily available at the URL: [a link](https://pokestore-b2w.herokuapp.com/)
+The project will be temporarily available at the URL: [PokeStore](https://pokestore-b2w.herokuapp.com/)
 
 ## Development
 
@@ -29,7 +29,7 @@ or
 $ npm start
 ```
 
-If the default browser does not take you directly to the address the project is running on, go to [a link](http://localhost:3000)
+If the default browser does not take you directly to the address the project is running on, go to [React on Localhost](http://localhost:3000)
 
 ## Tests
 
