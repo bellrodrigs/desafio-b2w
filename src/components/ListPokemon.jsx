@@ -2,16 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector } from 'react-redux'
 import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap'
 import {FirstLetterUpperCase} from '../helpers'
+import { loadPokemons } from '../store/pokemonFetch'
 
 
 function ListPokemon() {
 
   //states
+  const pokemon = useSelector(state => state.pokemons.pokemons)
+  // const [pokemon, setPokemon] = useState([]);
+  // setPokemon(pokeRedux)
   const typeRedux = useSelector(state => state.pokemons.typePokemon)
-  const [pokemon, setPokemon] = useState([]);
   const [type, setType] = useState(typeRedux !== '' ? typeRedux : {name:'fire'})
 
-  const urlDefault = `https://pokeapi.co/api/v2/type/${typeRedux !== '' ? typeRedux : type.name}`;
+  const urlDefault = `https://pokeapi.co/api/v2/type/`;
   const imageNotFound = 'https://betadesign.com.br/site/wp-content/themes/bds/images/no-image-found-360x250.png'
 
   const dispatch = useDispatch()
@@ -19,58 +22,32 @@ function ListPokemon() {
 const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', type: 'water', color:'info'}]
 
   useEffect(() => {
-    loadPokemons(urlDefault);
-  }, []);
-
-  const loadPokemons =  (url) => {
-    fetch(url)
-     .then((response) => response.json())
-     .then((data) => {
-       data.pokemon.map( y => {
-       let index = y.pokemon.url.split('/');
-       fetch(`https://pokeapi.co/api/v2/pokemon/${index[6]}`)
-        .then((response) => response.json())
-        .then( (data) => {
-          setPokemon((pokemon) => [
-            ...pokemon,
-            {
-              index: index[6],
-              img: data.sprites.front_default,
-              data,
-              price: Math.floor(Math.random() * 90 + 10)
-            },
-          ]);
-        });
-      })
-    });
-  };
-  
+    //new function on store
+    loadPokemons(pokemon, dispatch)(urlDefault, type.name)
+  }, []); 
 
   const addPokemon =  (data) => {
   dispatch({type:'ADD_POKEMON_CART', data: data})
  }
 
- const getType = async (typeName) => {
-   console.log(JSON.parse(localStorage.getItem('reduxStore')))
- await setPokemon([])
+//  const findPokemon = (ev) => {
+//   let poke = pokemon.map(x => {
+//     return { index: x.index, img: x.img, data: x.data , price: x.price}
+//   })
+//   if(ev.target.value !== ''){
+//       let newList = [];
+//       newList = poke.filter(p => p.data.name.includes(ev.target.value.toLowerCase()))
+//       pokemon = newList
+//     } else if (ev.target.value === '') {
+//       pokemon = useSelector(state => state.pokemons.pokemons)
+//     }
+//  }
+
+ const getType = (typeName) => {
+  dispatch({type: 'CLEAN_POKEMON'})
   setType(typeName.name)
-  loadPokemons(`https://pokeapi.co/api/v2/type/${typeName.type}`)
+  loadPokemons(pokemon, dispatch)(urlDefault, typeName.type)
   dispatch({type: 'ADD_TYPE_POKEMON', typePokemon: typeName.type})
- }
-
- const findPokemon = (ev) => {
-
-  let poke = pokemon.map(x => {
-    return { index: x.index, img: x.img, data: x.data , price: x.price}
-  })
-  if(ev.target.value !== ''){
-      let newList = [];
-      newList = poke.filter(p => p.data.name.includes(ev.target.value.toLowerCase()))
-      setPokemon(newList)
-    } else if (ev.target.value === '') {
-        setPokemon([])
-        loadPokemons(`https://pokeapi.co/api/v2/type/${typeRedux}`)
-    }
  }
 
  const fireLength = typeRedux == 'fire' || type.name =='fire' ? pokemon.length : 0
@@ -85,7 +62,7 @@ const tipos = [{name:'fogo', type: 'fire', color: "warning"}, {name:'água', typ
               placeholder="Buscar"
               aria-label="Buscar"
               aria-describedby="basic-addon1"
-              onChange={findPokemon}
+              // onChange={findPokemon}
             />
           </InputGroup>
          </Col>
